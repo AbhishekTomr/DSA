@@ -1,29 +1,21 @@
-let charMap = {};
+const charMapper = {};
 
 var lengthOfLongestSubstring = function (s) {
-  const subStrings = [];
-  let str = "";
-  for (let i = 0; i < s.length; i++) {
-    if (!charMap[s[i]]) {
-      charMap[s[i]] = 1;
-      str += s[i];
-    } else {
-      subStrings.push(str);
-      charMap = {
-        [s[i]]: 1,
-      };
-      str = s[i];
+  if (!s.length) return 0;
+  let start = 0;
+  let end = 0;
+  let count = 0;
+  while (end < s.length) {
+    let character = s[end];
+    if (charMapper[character] !== undefined && charMapper[character] >= start) {
+      start = end;
     }
+    charMapper[character] = end;
+    end++;
+    count = Math.max(end - start, count);
   }
-  subStrings.push(str);
-  let maxSub = subStrings[0];
-  subStrings.forEach((item, index) => {
-    if (item.length > maxSub.length) {
-      maxSub = item;
-    }
-  });
-  console.log("subStrings", subStrings);
-  return maxSub.length;
+  count = Math.max(end - start, count);
+  return count;
 };
 
-console.log(lengthOfLongestSubstring("dvdf"));
+console.log(lengthOfLongestSubstring("bwf"));
